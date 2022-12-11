@@ -1,18 +1,12 @@
 package server_client;
 
-
-//import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-//import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-
-
 
 public class Server{
 	private ServerSocket serverSocket;
@@ -32,7 +26,6 @@ public class Server{
 				System.out.println("A new client has connected!");
 				din = new DataInputStream(socket.getInputStream());  
 				dout = new DataOutputStream(socket.getOutputStream());  
-//				BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 				String str="",str2="";
 				str=din.readUTF();  
 				if(str.equals("Request Time")) {
@@ -40,10 +33,6 @@ public class Server{
 					dout.writeUTF(str2);  
 					dout.flush();
 				}
-				
-//				ClientHandler clientHandler = new ClientHandler(socket);
-//				Thread thread = new Thread(clientHandler);
-//				thread.start();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,44 +94,3 @@ public class Server{
 		}
 	}
 }
-//public class Server extends Thread {
-//	private ServerSocket serverSocket;
-//
-//	public Server(int port){
-//		try {
-//			this.serverSocket = new ServerSocket(port);
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public void run(){
-//		while (true) {
-//			try {
-//				Socket server = serverSocket.accept();
-//				DataInputStream in = new DataInputStream(server.getInputStream());
-////				System.out.println(in);
-//				DataOutputStream out = new DataOutputStream(server.getOutputStream());
-////				System.out.println(out);
-//				int i = in.readInt();
-//				for (int j = 0; j < i; j++) {
-//					Thread.sleep((long) (100 + new Random().nextInt(51)));
-//					out.writeLong(System.currentTimeMillis());
-//				}
-//				server.close();
-//			} catch (UnknownHostException ex) {
-//				Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//			} catch (IOException | InterruptedException ex) {
-//				Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-//			}
-//		}
-//	}
-//
-//	public static void main(String[] args){
-//		int port = 5000;
-//		Thread t = new Server(port);
-//		t.start();
-//	}
-//
-//}

@@ -4,37 +4,30 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Toolkit;
-//import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-//import java.io.InputStreamReader;
+
 import java.net.Socket;
 import java.net.UnknownHostException;
-//import java.text.SimpleDateFormat;
-//import java.util.Calendar;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.util.Random;
 
 public class MyFrame extends JFrame{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-//	private Calendar calendar;
-
-//	private SimpleDateFormat dayFormat;
-//	private SimpleDateFormat dateFormat;
+	
 	private JLabel timeLabel;
 	private JLabel dayLabel;
 	private JLabel dateLabel;
 	private JButton button;
 	private String time;
-//	private String day;
-//	private String date;
-	private int hours = 10, minute = 10, second = 10;
+	Random rd = new Random();
+	private int hours = rd.nextInt(24), minute = rd.nextInt(60), second = rd.nextInt(60);
 	
 	
 	MyFrame(){
@@ -46,10 +39,6 @@ public class MyFrame extends JFrame{
 		
 		this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width  - getSize().width) / 2,
 				(Toolkit.getDefaultToolkit().getScreenSize().height - getSize().height) / 2);
-		
-
-//		dayFormat = new SimpleDateFormat("EEEE");
-//		dateFormat = new SimpleDateFormat("dd MMMMM, yyyy");
 		
 		timeLabel = new JLabel();
 		timeLabel.setFont(new Font("Verdana", Font.PLAIN, 50));
@@ -70,8 +59,6 @@ public class MyFrame extends JFrame{
 		button.addActionListener(e -> updateTime());
 		
 		this.add(timeLabel);
-//		this.add(dayLabel);
-//		this.add(dateLabel);
 		this.setVisible(true);
 		this.add(button);
 		setTime();
@@ -96,12 +83,6 @@ public class MyFrame extends JFrame{
 			else second = Integer.toString(this.second);
 			time = hours + ": " + minute + ": " + second;
 			timeLabel.setText(time);
-//			System.out.println(time);
-//			day = dayFormat.format(Calendar.getInstance().getTime());
-//			dayLabel.setText(day);
-//			
-//			date = dateFormat.format(Calendar.getInstance().getTime());
-//			dateLabel.setText(date);
 			
 			try {
 				if(this.second < 60) this.second++;
@@ -116,7 +97,6 @@ public class MyFrame extends JFrame{
 				}
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -125,7 +105,7 @@ public class MyFrame extends JFrame{
 	public void updateTime() {
 		Socket s;
 		try {
-			s = new Socket("192.168.1.11",9999);
+			s = new Socket("192.168.1.22",9999);
 			DataInputStream din=new DataInputStream(s.getInputStream());  
 			DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
 			
@@ -151,20 +131,19 @@ public class MyFrame extends JFrame{
 					Thread.sleep(1000);
 					waitingTime++;
 				}
-			}  
+			}
 			if (waitingTime > 10) System.out.println("Server do not  response!");
 			dout.close();  
 			s.close(); 
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Can't connect to server");
+//			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		} 
+		
 	}
 	
 }
