@@ -13,6 +13,8 @@ import java.net.UnknownHostException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.util.Random;
 
 public class MyFrame extends JFrame{
@@ -138,8 +140,9 @@ public class MyFrame extends JFrame{
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("Can't connect to server");
-//			e.printStackTrace();
+//			System.out.println("");
+			JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+			JOptionPane.showMessageDialog(frame, "Can't connect to server! Server is not operating now.", "Connect error", JOptionPane.ERROR_MESSAGE);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} 
