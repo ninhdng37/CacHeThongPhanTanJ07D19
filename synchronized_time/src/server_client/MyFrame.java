@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.swing.JButton;
@@ -24,17 +23,16 @@ public class MyFrame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	private JLabel timeLabel;
-	private JLabel dayLabel;
-	private JLabel dateLabel;
+	
 	private JButton button;
 	private String time;
 	Random rd = new Random();
-	private int hours = rd.nextInt(24), minute = rd.nextInt(60), second = rd.nextInt(60);
+	private int hours = rd.nextInt(24), minute = rd.nextInt(59), second = rd.nextInt(59);
+	//rd.nextInt(24)
 	
-	
-	MyFrame(){
+	MyFrame(String tittle){
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("My Clock Program");
+		this.setTitle(tittle);
 		this.setLayout(new FlowLayout());
 		this.setSize(350, 200);
 		this.setResizable(false);
@@ -48,13 +46,6 @@ public class MyFrame extends JFrame{
 		timeLabel.setBackground(Color.black);
 		timeLabel.setOpaque(true);
 		
-		dayLabel = new JLabel();
-		dayLabel.setFont(new Font("Ink Free", Font.PLAIN, 35));
-		
-		
-		dateLabel = new JLabel();
-		dateLabel.setFont(new Font("Ink Free", Font.PLAIN, 35));
-		
 		button = new JButton();
 		button.setBounds(200, 100, 100, 50);
 		button.setText("Request Time");
@@ -62,7 +53,8 @@ public class MyFrame extends JFrame{
 		
 		this.add(timeLabel);
 		this.setVisible(true);
-		this.add(button);
+		if (tittle.equals("Client"))
+			this.add(button);
 		setTime();
 	}
 	
@@ -71,8 +63,7 @@ public class MyFrame extends JFrame{
 		String hours = new String();
 		String minute = new String();
 		String second = new String();
-		
-		
+				
 		while(true) {
 			if(this.hours < 10)
 				hours = "0" + Integer.toString(this.hours);
@@ -87,13 +78,13 @@ public class MyFrame extends JFrame{
 			timeLabel.setText(time);
 			
 			try {
-				if(this.second < 60) this.second++;
+				if(this.second < 59) this.second++;
 				else {
 					this.second = 0;
-					if(this.minute < 60) this.minute ++;
+					if(this.minute < 59) this.minute ++;
 					else {
 						this.minute = 0;
-						if (this.hours < 24) this.hours++;
+						if (this.hours < 23) this.hours++;
 						else this.hours = 0;
 					}
 				}
@@ -112,11 +103,11 @@ public class MyFrame extends JFrame{
 			DataOutputStream dout=new DataOutputStream(s.getOutputStream());  
 			
 			String str="",str2="";
-			str = "Request Time"; 
-			dout.writeUTF(str);  
+			str = "Request Time";
+			dout.writeUTF(str);
 			dout.flush();
-			int waitingTime = 0;
-			while(waitingTime <= 10){
+			
+			while(true){
 				
 				str2=din.readUTF();
 				if(!str2.isEmpty()) {
@@ -126,27 +117,19 @@ public class MyFrame extends JFrame{
 					this.hours = Integer.parseInt(unitsOfClock[0]);
 					this.minute = Integer.parseInt(unitsOfClock[1]);
 					this.second = Integer.parseInt(unitsOfClock[2]);
-					time = str2;
+					this.time = str2;
 					break;
 				}
-				else {
-					Thread.sleep(1000);
-					waitingTime++;
-				}
+				
 			}
-			if (waitingTime > 10) System.out.println("Server do not  response!");
+//			if (waitingTime > 10) System.out.println("Server do not  response!");
 			dout.close();  
 			s.close(); 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-//			System.out.println("");
 			JFrame frame = new JFrame("JOptionPane showMessageDialog example");
 			JOptionPane.showMessageDialog(frame, "Can't connect to server! Server is not operating now.", "Connect error", JOptionPane.ERROR_MESSAGE);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		} 
-		
-	}
-	
+	}	
 }

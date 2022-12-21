@@ -13,7 +13,6 @@ public class Server{
 	private SimpleDateFormat timeFormat;
 	private DataInputStream din;
 	private DataOutputStream dout;
-	
 	public Server(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
 	}
@@ -22,6 +21,7 @@ public class Server{
 		try {
 			setTimeFormat(new SimpleDateFormat("HH:mm:ss"));
 			while(!serverSocket.isClosed()) {
+				
 				Socket socket = serverSocket.accept();
 				System.out.println("A new client has connected!");
 				din = new DataInputStream(socket.getInputStream());  
@@ -29,7 +29,8 @@ public class Server{
 				String str="",str2="";
 				str=din.readUTF();  
 				if(str.equals("Request Time")) {
-					str2 = timeFormat.format(Calendar.getInstance().getTime());  
+					str2 = timeFormat.format(Calendar.getInstance().getTime());
+					System.out.println(str2);
 					dout.writeUTF(str2);  
 					dout.flush();
 				}
@@ -85,6 +86,7 @@ public class Server{
 
 	public static void main(String[] args) {
 		ServerSocket serverSocket;
+		new MyFrame("Server");
 		try {
 			serverSocket = new ServerSocket(9999);
 			Server server = new Server(serverSocket);
