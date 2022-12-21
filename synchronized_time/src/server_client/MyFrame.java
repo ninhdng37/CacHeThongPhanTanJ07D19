@@ -9,11 +9,14 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import java.util.Calendar;
 import java.util.Random;
 
 public class MyFrame extends JFrame{
@@ -53,12 +56,27 @@ public class MyFrame extends JFrame{
 		
 		this.add(timeLabel);
 		this.setVisible(true);
-		if (tittle.equals("Client"))
+		if (tittle.equals("CLIENT")) {
 			this.add(button);
-		setTime();
+			setTimeClient();
+		}
+		else setTimeServer();
 	}
 	
-	public void setTime() {
+	public void setTimeServer() {
+		SimpleDateFormat timeFormat = new  SimpleDateFormat("HH:mm:ss");
+		while(true) {
+		  time = timeFormat.format(Calendar.getInstance().getTime());
+		  timeLabel.setText(time);
+		  try {
+		   Thread.sleep(1000);
+		  } catch (InterruptedException e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
+		  }
+		}
+	}
+	public void setTimeClient() {
 
 		String hours = new String();
 		String minute = new String();
@@ -119,10 +137,8 @@ public class MyFrame extends JFrame{
 					this.second = Integer.parseInt(unitsOfClock[2]);
 					this.time = str2;
 					break;
-				}
-				
+				}	
 			}
-//			if (waitingTime > 10) System.out.println("Server do not  response!");
 			dout.close();  
 			s.close(); 
 		} catch (UnknownHostException e) {

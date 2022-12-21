@@ -2,7 +2,6 @@ package server_client;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
@@ -21,7 +20,6 @@ public class Server{
 		try {
 			setTimeFormat(new SimpleDateFormat("HH:mm:ss"));
 			while(!serverSocket.isClosed()) {
-				
 				Socket socket = serverSocket.accept();
 				System.out.println("A new client has connected!");
 				din = new DataInputStream(socket.getInputStream());  
@@ -84,15 +82,14 @@ public class Server{
 		this.dout = dout;
 	}
 
-	public static void main(String[] args) {
-		ServerSocket serverSocket;
-		new MyFrame("Server");
-		try {
-			serverSocket = new ServerSocket(9999);
-			Server server = new Server(serverSocket);
-			server.startServer();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		ServerSocket serverSocket;
+//		try {
+//			serverSocket = new ServerSocket(9999);
+//			Server server = new Server(serverSocket);
+//			server.startServer();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
